@@ -1,0 +1,70 @@
+IssueNewLoan.py
+from Loan import Loan
+
+def main():
+	annualInterestRate = eval(input("Enter the Yearly Interest Rate: "))
+
+	numberOfYears = eval(input("Enter number of years - as integer only: "))
+	
+	loanAmount = eval(input("Enter Loan Amount required in XXXXX.XX format: "))
+
+	borrower = input("Enter the borrower's name: Mr./Ms. ")
+
+	# Create a Loan Object
+	newLoan = Loan(annualInterestRate, numberOfYears, loanAmount, borrower)
+
+	# Display the generated new loan details
+	print(" ")
+	print("The New Sanctioned Loan Details are:")
+	print("--- --- ---------- ---- ------- ---")
+	print("Loan is issued in the name of Mr./Ms. ", newLoan.getBorrower())
+	print("Loan Amount is Rs. ", format(loanAmount,".2f"))
+	print("Loan Repayment Years: ", numberOfYears)
+	print("Monthly Repayment Amount is Rs. ", format(newLoan.getMonthlyPayment(),".2f"))
+	print("Total Repayment Amount will be Rs. ", format(newLoan.getTotalPayment(),".2f"))
+
+main()
+
+Loan.py
+class Loan:
+	def __init__(self, annualInterestRate = 10.5, numberOfYears = 1, loanAmount = 10000, borrower = " "):
+		self.__annualInterestRate = annualInterestRate
+		self.__numberOfYears = numberOfYears
+		self.__loanAmount = loanAmount
+		self.__borrower = borrower
+
+	def getAnnualInterestRate(self):
+		return self.__annualInterestRate
+
+	def getNumberOfYears(self):
+		return self.__numberOfYears
+
+	def getLoanAmount(self):
+		return self.__loanAmount
+
+	def getBorrower(self):
+		return self.__borrower
+
+	def setAnnualInterestRate(self, annualInterestRate):
+		self.__annualInterestRate = annualInterestRate
+
+	def setNumberOfYears(self, numberOfYears):
+		self.__numberOfYears = numberOfYears
+
+	def setLoanAmount(self, loanAmount):
+		self.__loanAmount = loanAmount
+
+	def setBorrower(self, borrower):
+		self.__borrower = borrower
+
+	def getMonthlyPayment(self):
+		monthlyInterestRate = self.__annualInterestRate / 1200
+		monthlyPayment = \
+			self.__loanAmount * monthlyInterestRate / (1 - (1 / 
+			(1 + monthlyInterestRate) ** (self.__numberOfYears * 12)))
+		return monthlyPayment
+
+	def getTotalPayment(self):
+		totalPayment = self.getMonthlyPayment() * self.__numberOfYears * 12
+		return totalPayment
+
